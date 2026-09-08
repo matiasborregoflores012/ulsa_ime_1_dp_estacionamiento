@@ -1,115 +1,56 @@
-# Simulador de Acceso a Estacionamiento (versión inicial)
+# Simulador de Acceso a Estacionamiento 
 
-Punto de partida en C++ para el proyecto **Simulador de Acceso a Estacionamiento**.
-Esta versión es intencionalmente limitada: no valida tipos de vehículo ni cupos.
-El objetivo es que los equipos entiendan la estructura base antes de agregar las
-reglas completas del proyecto (control por tipo de vehículo, capacidad máxima,
-etc.).
 
-## ¿Qué hace este programa?
+Este proyecto es un simulador sencillo de estacionamiento escrito en C++.  
+Permite:
+- Entrada de vehículos por tipo (COMPACTO, SEDAN, SUV).
+- Asignación automática de lugares disponibles.
+- Salida de vehículos indicando el número de lugar (ejemplo: SUV01).
+- Mostrar el estado general y porcentaje de ocupación.
 
-Es una interfaz de una sola entrada de texto: todo lo que el usuario teclea se
-interpreta según el caso:
+---
 
-- Si el texto **no** coincide con ningún código activo, se registra como una
-  **entrada** nueva.
-- Si el texto **sí** coincide con un código activo, se registra como una
-  **salida**.
-- Si el usuario teclea `SALIR`, el programa termina.
+## Requisitos
 
-No hay límite de cupos ni validación de tipo de vehículo: cualquier texto es
-aceptado como una entrada válida.
+### Windows (MSYS2 + MinGW-w64)
+1. Instalar [MSYS2](https://www.msys2.org).
+2. Abrir la terminal **MSYS2 UCRT64**.
+3. Instalar el compilador:
+   ```bash
+   pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain
 
-## Ejemplo de uso
+   verificar la instalacion
 
-```
-=== Simulador de Acceso a Estacionamiento (version inicial) ===
-- Teclea el tipo de vehiculo (ej. SUV, SEDAN, COMPACTO) para registrar una entrada.
-- Teclea el codigo que recibiste al entrar para registrar una salida.
-- Teclea SALIR para terminar el programa.
+   g++ --version
 
-> suv
-Entrada registrada. Tu codigo de acceso es: SUV1
-> sedan
-Entrada registrada. Tu codigo de acceso es: SEDAN2
-> SUV1
-Salida registrada para el codigo: SUV1
-> salir
-Programa terminado.
-```
+### macOS (Xcode CLI)
 
-El código de acceso se forma con el texto tecleado (convertido a mayúsculas)
-más un número consecutivo, por ejemplo `SUV1`, `SEDAN2`, `COMPACTO3`.
+1. Instalar herramientas de línea de comandos:
 
-## Archivos de configuración del proyecto
+xcode-select --install
 
-- **`.clangd`**: configuración para el servidor de lenguaje `clangd`, que es
-  el que le da a VSCode (y a otros editores) el autocompletado, la detección
-  de errores en tiempo real y el "ir a la definición" mientras se escribe
-  código. No afecta la compilación ni la ejecución del programa.
-- **`.gitignore`**: le indica a Git qué archivos o carpetas no debe subir al
-  repositorio (por ejemplo, la carpeta `build/` generada al compilar). Evita
-  que se suban archivos temporales o binarios que no son parte del código
-  fuente.
-- **`Makefile`**: automatiza la compilación con el comando `make`, en lugar
-  de tener que escribir el comando de `g++` completo cada vez. Define en
-  dónde queda el ejecutable, con qué opciones se compila y agrega atajos
-  como `make run` y `make clean`.
+2. Verificar instalación:
 
-## Estructura del proyecto
+g++ --version
 
-```
-.
-├── .clangd
-├── .gitignore
-├── include
-│   ├── RegistrarEntrada.h    # Función registrarEntrada(...)
-│   └── RegistrarSalida.h     # Función registrarSalida(...)
-├── Makefile
-├── README.md
-└── src
-    └── main.cpp              # Función principal: lee la entrada del usuario
-                               # y decide si es una entrada, una salida o el
-                               # comando SALIR
-```
+### Compilacion y ejecucion windows
 
-Las funciones `registrarEntrada` y `registrarSalida` están separadas de
-`main()` y viven cada una en su propio archivo `.h` dentro de `include/`, con
-include guards para evitar inclusiones duplicadas.
+1. cd src
+g++ programa.h.cpp -o programa.h.cpp
+.\programa.exe
 
-## Compilar y ejecutar
+### Compilacion y ejecucion macOS
 
-Con el Makefile incluido, el ejecutable se genera en `build/gestionaEstacionamiento`:
+1. cd src
+g++ programa.h.cpp -o programa.h.cpp
+.\programa
 
-```
-make          # compila el proyecto (equivale al target "all")
-make run      # compila (si hace falta) y ejecuta el programa
-make clean    # borra el ejecutable generado
-```
+### ejemplo de uso
 
-También se puede compilar manualmente con g++:
+Bienvenido al Simulador de Acceso a Estacionamiento
+Ingrese el tamaño del vehiculo para entrada (COMPACTO, SEDAN, SUV)
+o el numero de lugar para la salida (ej. SUV01)
+Escriba SALIR para terminar
 
-```
-g++ -std=c++17 -Wall -Iinclude src/main.cpp -o build/gestionaEstacionamiento
-./build/gestionaEstacionamiento
-```
-
-## Qué le falta para llegar al alcance completo del proyecto
-
-Esta versión es solo el punto de partida. El proyecto final del parcial debe
-incluir, entre otras cosas:
-
-- Validar el tipo de vehículo (`SUV`, `SEDAN`, `COMPACTO`) en lugar de aceptar
-  cualquier texto.
-- Controlar el cupo disponible por tipo de vehículo.
-- Cualquier otro criterio que se haya definido en la especificación del
-  proyecto y en la rúbrica de evaluación.
-
-## Buenas prácticas señaladas en el código
-
-- Se trabaja siempre con una copia en mayúsculas del texto para comparar,
-  sin modificar el texto original tecleado por el usuario.
-- Se usa `find` de `<algorithm>` para buscar un código dentro de la lista de
-  códigos activos, en lugar de escribir un ciclo manual.
-- Los archivos `.h` usan include guards (`#ifndef` / `#define` / `#endif`)
-  para evitar problemas si llegaran a incluirse más de una vez.
+> SUV
+Vehiculo aceptado. Lugar asignado: SUV01
