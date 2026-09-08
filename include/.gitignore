@@ -1,0 +1,20 @@
+# Archivos de compilación
+*.o
+*.obj
+*.exe
+*.out
+*.dll
+*.so
+*.dylib
+
+# Archivos de depuración
+*.pdb
+*.idb
+
+# Configuración de IDEs
+.vscode/
+.idea/
+
+# Archivos temporales
+*.log
+*.tmp
